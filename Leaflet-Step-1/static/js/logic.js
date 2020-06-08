@@ -1,17 +1,16 @@
-// Store our API endpoint inside queryUrl
+// API endpoint
 var queryUrl = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=2020-5-31&endtime=" +
   "2020-6-1&maxlongitude=-69.52148437&minlongitude=-123.83789062&maxlatitude=48.74894534&minlatitude=25.16517337";
 
-// Perform a GET request to the query URL
+// GET request to queryUrl according to API
 d3.json(queryUrl, function(data) {
-  // Once we get a response, send the data.features object to the createFeatures function
+  // Data will be utilized in the following function
   createFeatures(data.features);
 });
 
 function createFeatures(earthquakeData) {
 
-  // Define a function we want to run once for each feature in the features array
-  // Give each feature a popup describing the place and time of the earthquake
+  // Creates popup for each feature of our data. Will be used to create GeoJSON layer
   function onEachFeature(feature, layer) {
 
     layer.bindPopup("<h3>" + feature.properties.place +
@@ -21,8 +20,7 @@ function createFeatures(earthquakeData) {
       new Date(feature.properties.time) + "</p>");
   }
 
-  // Create a GeoJSON layer containing the features array on the earthquakeData object
-  // Run the onEachFeature function once for each piece of data in the array
+  // Using previous function to create GeoJSON layer
   var earthquakes = L.geoJSON(earthquakeData, {
     onEachFeature: onEachFeature
   });
@@ -43,18 +41,18 @@ function createFeatures(earthquakeData) {
     accessToken: API_KEY
   });
   
-  // Define a baseMaps object to hold our base layers
+  // baseMaps object to hold our base layers
   var baseMaps = {
     "Street Map": streetmap,
     "Dark Map": darkmap
   };
 
-  // Create overlay object to hold our overlay layer
+  // Overlay object to hold our overlay layer
   var overlayMaps = {
     Earthquakes: earthquakes
   };
 
-  // Create our map, giving it the streetmap and earthquakes layers to display on load
+  // Creating map; streemap and earthquake layers set to default
   var myMap = L.map("map", {
     center: [
       37.09, -95.71
@@ -63,19 +61,15 @@ function createFeatures(earthquakeData) {
     layers: [streetmap, earthquakes]
   });
 
-  // Create a layer control
-  // Pass in our baseMaps and overlayMaps
-  // Add the layer control to the map
+  // Layer control for our baseMaps and overlayMaps
   L.control.layers(baseMaps, overlayMaps, {
     collapsed: false
   }).addTo(myMap);
 
+  // Creating variables for each element of the dataset needed to create circle visuals
   var mag = earthquakeData.map(data => data.properties.mag)
   var lat = earthquakeData.map(data => data.geometry.coordinates[1])
   var long = earthquakeData.map(data => data.geometry.coordinates[0])
-
-  console.log(earthquakeData)
-  console.log(lat)
     
   //Conditional for circle color and size proportional to magnitude. Limited to mag of 7 due to none happening beyond that
   for (var i = 0; i < earthquakeData.length; i++) {
@@ -108,6 +102,7 @@ function createFeatures(earthquakeData) {
     }).addTo(myMap);
   }
 
+  // Got this from leaflet Choropleth documentation. Used to create legend
   function getColor(d) {
     return d > 7 ? 'red' :
            d > 6  ? '#D61A46' :
@@ -137,7 +132,7 @@ function createFeatures(earthquakeData) {
   
       return div;
   };
-  
+
   legend.addTo(myMap);
   
 
