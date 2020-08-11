@@ -11,10 +11,10 @@ For this assignment, earthquake data from the [USGS GeoJSON Feed](http://earthqu
 
 John Jostes - [https://www.linkedin.com/in/john-jostes-386b841a0/](https://www.linkedin.com/in/john-jostes-386b841a0/)
 
-Project Link: [https://github.com/jjostes/stock-market-analysis](https://github.com/jjostes/stock-market-analysis)
+Project Link: [https://github.com/jjostes/USGS-geoJSON-visual](https://github.com/jjostes/USGS-geoJSON-visual)
 
 
 
 <!-- MAP LINK -->
 
-[map]: https://github.com/jjostes/blob/master/USGS-geoJSON-visual/screenshot.png
+[map]: https://github.com/jjostes/USGS-geoJSON-visual/blob/master/screenshot.png
